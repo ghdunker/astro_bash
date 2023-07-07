@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 source ./include.sh
 clear
-# TODO: Establish EDT vs EST etc.. right now hard coding EDT
 
 declare -a DAY 
 declare -a NIGHT 
 
 declare -a hplanets=("sun" "venus" "mercury" "moon" "saturn" "jupiter" "mars")
+# hplanets_i array is the order of the planets through the week 
+# from the hplanets array
 # for a day, start at hplantest_i[day]
 declare -a hplanets_i=(0 3 6 2 5 1 4)
-#order of planets by weekday (day and night)
-#To get night planet, add 4 (day sun ---> night jupiter)
-declare -a dplanets=("sun" "moon" "mars" "mercury" "jupiter" "venus" "saturn")
 
 # R   = Rise tmie 
 # S   = Set time 
@@ -55,6 +53,7 @@ else
   echo "day_of_week: $day_of_week"
 fi
 
+# The night sign is four ahead of the day sign
 let "night_of_week_p=day_of_week+4"
 night_of_week=`Norm_seven $night_of_week_p`
 
@@ -84,7 +83,6 @@ do
 done
 
 # Notice the use of eval!
-  # TODO: This fails if it's the last DAY member (same with NIGHT array)
 function is_current (){ # Pass the index, the DAY/NIGHT array
   index=$1
   let "next_hour=index+1"
