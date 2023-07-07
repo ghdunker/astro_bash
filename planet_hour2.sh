@@ -22,11 +22,6 @@ declare -a dplanets=("sun" "moon" "mars" "mercury" "jupiter" "venus" "saturn")
 
 R=`getRisetime`
 S=`getSettime`
-Date=`date +%Y-%m-%d`
-day_of_week_p=`date +%w`
-let "day_of_week=day_of_week_p+1"
-let "night_of_week_p=day_of_week+5"
-night_of_week=`Norm_seven $night_of_week_p`
 
 
 cur_l="" # Left part of current time indicator
@@ -44,6 +39,24 @@ tn=`date +%Y-%m-%d\ %R\ %Z`
 tnh=`date --date="$tn" +%H`
 tnm=`date --date="$tn" +%M`
 
+# if $tnh:$tnm is greater than 00:00 and < $Rh:$Rm
+# then the date is the previous day 
+# tn=`date --date="$tn -1 day" +%Y-%m-%d\ %R\ %Z`
+# 
+if [[ `comp_time $tnh:$tnm 00:00` -eq 1 && `comp_time $tnh:$tnm $Rh:$Rm` -eq 0  ]];
+then
+  tn=`date --date="$tn -1 day" +%Y-%m-%d\ %R\ %Z`
+  echo "Rise Date: $tn"
+  day_of_week=`date --date="$tn" +%w`
+  echo "day_of_week: $day_of_week"
+  echo "late but early"
+else
+  day_of_week=`date --date="$tn" +%w`
+  echo "day_of_week: $day_of_week"
+fi
+
+let "night_of_week_p=day_of_week+4"
+night_of_week=`Norm_seven $night_of_week_p`
 
 Sh=`date --date="$S" +%H`
 Sm=`date --date="$S" +%M`
@@ -102,8 +115,9 @@ echo "DAY:"
 for i in ${!DAY[@]}
 do 
   P_DAY=`is_current $i "DAY"`
-  cur_planet=${hplanets[$start_day]}
-  echo -e $P_DAY ${planets[$cur_planet]}
+  cur_planet_i=${hplanets_i[$start_day]}
+  cur_planet=${hplanets[$cur_planet_i]}
+  echo -e $P_DAY ${planets[$cur_planet]} 
   let "start_day++"
   start_day=`Norm_seven $start_day`
 done
@@ -114,7 +128,8 @@ echo "NIGHT:"
 for i in ${!NIGHT[@]}
 do
   P_NIGHT=`is_current $i "NIGHT"`
-  cur_planet=${hplanets[$start_night]}
+  cur_planet_i=${hplanets_i[$start_night]}
+  cur_planet=${hplanets[$cur_planet_i]}
   echo -e $P_NIGHT ${planets[$cur_planet]}
   let "start_night++"
   start_night=`Norm_seven $start_night`
