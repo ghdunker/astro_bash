@@ -11,7 +11,7 @@ planets[mars]="\u2642"
 planets[jupiter]="\u2643"
 planets[saturn]="\u2644"
 
-rs=`../sunrise.sh`
+rs=`./sunrise.sh`
 
 function getRisetime (){
   echo $rs | sed -n -e "s/^\([0-9]*:[0-9]*\).*$/\1/p"

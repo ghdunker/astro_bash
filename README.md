@@ -1,5 +1,5 @@
 # astro_bash
-These are some handy scripts for astrology. All of these script use the `date` and `bc` command. 
+These are some handy scripts for astrology. All of these script use the `date` and `bc` command. `planet_hour2.sh` calls `sunrise.sh`, which uses the [astrolog](https://www.astrolog.org) program and has the observer location hard coded (for now).
 
 ## Profections:
 **profections.sh** takes a birth date (YYYY-MM-DD) and the ascendant (0-11) to give the current profected year.
