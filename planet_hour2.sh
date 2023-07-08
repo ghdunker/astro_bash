@@ -57,10 +57,10 @@ fi
 let "night_of_week_p=day_of_week+4"
 night_of_week=`Norm_seven $night_of_week_p`
 
-Sh=`date --date="$S" +%H`
-Sm=`date --date="$S" +%M`
-tfR=`date --date="$tn -$Rh hours -$Rm minutes" +%H:%M`
-tfS=`date --date="$DS -$tnh hours -$tnm minutes" +%H:%M`
+Sh=`date --date="$S" +%H` # Sunsetet hour
+Sm=`date --date="$S" +%M` # Sunset minute
+tfR=`date --date="$tn -$Rh hours -$Rm minutes" +%H:%M` # Time from Rise
+tfS=`date --date="$DS -$tnh hours -$tnm minutes" +%H:%M` # Time from set
 
 
 echo "Rise/Set: $R, $S"
@@ -82,6 +82,7 @@ do
   NIGHT+=("`date --date="$DS +$i hour" +%Y-%m-%d\ %R\ %Z`")
 done
 
+# Is the current DAY/NIGHT hour member the curretn hour?
 # Notice the use of eval!
 function is_current (){ # Pass the index, the DAY/NIGHT array
   index=$1
@@ -104,17 +105,19 @@ function is_current (){ # Pass the index, the DAY/NIGHT array
   echo -e $cur_l$HOUR$cur_r 
 }
 
-start_day=$day_of_week
-start_night=$night_of_week
+start_day=$day_of_week # the day (0-6) is to array hplanets_i
+start_night=$night_of_week # same idea, just 4 members ahead
 
 echo -e ""
 
 echo "DAY:"
+  cur_planet_i=${hplanets_i[$start_day]} # Get index to start in hplanets
 for i in ${!DAY[@]}
 do 
   P_DAY=`is_current $i "DAY"`
-  cur_planet_i=${hplanets_i[$start_day]}
-  cur_planet=${hplanets[$cur_planet_i]}
+  let "planet=i+cur_planet_i"
+  dplanet=`Norm_seven planet`
+  cur_planet=${hplanets[$dplanet]}
   echo -e $P_DAY ${planets[$cur_planet]} 
   let "start_day++"
   start_day=`Norm_seven $start_day`
@@ -123,11 +126,13 @@ done
 echo -e ""
 
 echo "NIGHT:"
+  cur_planet_i=${hplanets_i[$start_night]} # Get an index where to start hplanets
 for i in ${!NIGHT[@]}
 do
   P_NIGHT=`is_current $i "NIGHT"`
-  cur_planet_i=${hplanets_i[$start_night]}
-  cur_planet=${hplanets[$cur_planet_i]}
+  let "planet=i+cur_planet_i"
+  dplanet=`Norm_seven planet`
+  cur_planet=${hplanets[$dplanet]}
   echo -e $P_NIGHT ${planets[$cur_planet]}
   let "start_night++"
   start_night=`Norm_seven $start_night`
