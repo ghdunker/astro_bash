@@ -38,14 +38,6 @@ function Norm_Sign () {
 }
 
 # To be used with planet and week array
-function Norm_seven () {
-  i=$1
-  while [[ $i -gt 6 ]];
-  do
-    let "i=i-7"
-  done
-  echo $i
-}
 
 # age, asc
 function get_sign (){

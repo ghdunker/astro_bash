@@ -55,7 +55,7 @@ fi
 
 # The night sign is four ahead of the day sign
 let "night_of_week_p=day_of_week+4"
-night_of_week=`Norm_seven $night_of_week_p`
+night_of_week=`expr $night_of_week_p % 7`
 
 Sh=`date --date="$S" +%H` # Sunsetet hour
 Sm=`date --date="$S" +%M` # Sunset minute
@@ -116,11 +116,11 @@ for i in ${!DAY[@]}
 do 
   P_DAY=`is_current $i "DAY"`
   let "planet=i+cur_planet_i"
-  dplanet=`Norm_seven planet`
+  dplanet=`expr $planet % 7`
   cur_planet=${hplanets[$dplanet]}
   echo -e $P_DAY ${planets[$cur_planet]} 
   let "start_day++"
-  start_day=`Norm_seven $start_day`
+  start_day=`expr $start_day % 7`
 done
 
 echo -e ""
@@ -131,9 +131,9 @@ for i in ${!NIGHT[@]}
 do
   P_NIGHT=`is_current $i "NIGHT"`
   let "planet=i+cur_planet_i"
-  dplanet=`Norm_seven planet`
+  dplanet=`expr $planet % 7`
   cur_planet=${hplanets[$dplanet]}
   echo -e $P_NIGHT ${planets[$cur_planet]}
   let "start_night++"
-  start_night=`Norm_seven $start_night`
+  start_night=`expr $start_night % 7`
 done 

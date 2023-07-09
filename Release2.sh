@@ -26,19 +26,11 @@ Cur_I=0 # Index used for both Sign and Period
 Cur_M=30 # Cur_M is either 30 or 360 days
 
 # Return extended index value of Signs
-function Norm_Sign () {
-  i=$1
-  while [[ $i -gt 11 ]];
-  do
-    let "i=i-12"
-  done
-  echo $i
-}
 
 # Return opposite sign
 function Loose () { 
   let "s_add=$1+6"
-  s_add=`Norm_Sign $s_add`
+  s_add=`expr $s_add % 12`
   echo $s_add
 }
 
@@ -66,7 +58,7 @@ function Make_Periods () {
   # convert it back: date --date='@39117600' +%Y-%m-%d
   for (( i_date=$sd_n; i_date<$ed_n; ))
   do
-    sign=`Norm_Sign $init_sign`
+    sign=`expr $init_sign % 12`
     init_sign=$sign
     #LB
     if [[ $sign -eq $3 && $init_p -eq 0 && $LB_flag -eq 0 ]];
