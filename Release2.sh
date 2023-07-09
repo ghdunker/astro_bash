@@ -25,8 +25,6 @@ Cur_Date=0
 Cur_I=0 # Index used for both Sign and Period
 Cur_M=30 # Cur_M is either 30 or 360 days
 
-# Return extended index value of Signs
-
 # Return opposite sign
 function Loose () { 
   let "s_add=$1+6"
