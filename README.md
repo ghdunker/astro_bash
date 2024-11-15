@@ -9,4 +9,3 @@ These are some handy scripts for astrology. All of these script use the `date` a
 
 ## Zodical Releasing:
 **select.sh** reads `start-date`, `end-date`, `bith-time`, and the sign (0-11) of `lot of fortune`. It starts output on level one and each selection goes up a level to level four (L4)
-
